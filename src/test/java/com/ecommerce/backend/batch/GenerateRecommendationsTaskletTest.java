@@ -1,9 +1,9 @@
 package com.ecommerce.backend.batch;
 
-import com.ecommerce.backend.document.Order;
-import com.ecommerce.backend.document.OrderItem;
-import com.ecommerce.backend.document.Recommendation;
-import com.ecommerce.backend.service.provider.OrderProvider;
+import com.ecommerce.backend.domain.Order;
+import com.ecommerce.backend.domain.Product;
+import com.ecommerce.backend.domain.Recommendation;
+import com.ecommerce.backend.service.OrderProvider;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -16,9 +16,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -91,10 +90,10 @@ public class GenerateRecommendationsTaskletTest {
     }
 
     private Order createOrder(String username, LocalDateTime date, String... productIds) {
-        List<OrderItem> items = new java.util.ArrayList<>();
+        List<Product> items = new ArrayList<>();
         for (String productId : productIds) {
-            items.add(new OrderItem(productId, 2));
+            items.add(new Product(productId, 2));
         }
-        return new Order(UUID.randomUUID().toString(), username, items, date);
+        return new Order(UUID.randomUUID().toString(), date.toLocalDate(), username, items);
     }
 }

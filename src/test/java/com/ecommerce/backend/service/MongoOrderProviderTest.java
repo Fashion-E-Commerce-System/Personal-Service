@@ -1,7 +1,7 @@
-package com.ecommerce.backend.service.provider;
+package com.ecommerce.backend.service;
 
-import com.ecommerce.backend.document.Order;
-import com.ecommerce.backend.document.OrderItem;
+import com.ecommerce.backend.domain.Order;
+import com.ecommerce.backend.domain.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,14 +47,13 @@ public class MongoOrderProviderTest {
         // Then
         assertNotNull(orders);
         assertEquals(2, orders.size()); // Expecting 2 orders from the last 5 weeks
-        // Add more specific assertions if needed
     }
 
     private Order createOrder(String username, LocalDateTime date, String... productIds) {
-        List<OrderItem> items = new java.util.ArrayList<>();
+        List<Product> items = new ArrayList<>();
         for (String productId : productIds) {
-            items.add(new OrderItem(productId, 2));
+            items.add(new Product(productId, 2));
         }
-        return new Order(UUID.randomUUID().toString(), username, items, date);
+        return new Order(UUID.randomUUID().toString(), date.toLocalDate(), username, items);
     }
 }
